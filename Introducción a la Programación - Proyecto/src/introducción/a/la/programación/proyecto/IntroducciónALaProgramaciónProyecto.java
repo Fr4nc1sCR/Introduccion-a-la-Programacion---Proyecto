@@ -1,113 +1,232 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package introducción.a.la.programación.proyecto;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
- *
- * @author hviqu
+ * Proyecto Final - Introducción a la Programación
+ * Integrantes:
+ *  - Julián Francisco Quesada Víquez
+ *  - Valeria Yhakina Alfaro Ramírez
+ *  - Justin Roberto Cordero Miranda
  */
 public class IntroducciónALaProgramaciónProyecto {
-    
-    
-    // Declaración de variables globales
-    
-    // Empleados
+
+    // ===== Variables globales =====
     static String[] empleados = new String[3];
     static String[] nombres = new String[3];
-    
-    // Horarios del Gimnasio
     static String[] horariosGym = new String[6];
-    static String[] reservasGYm = new String[6];
-    
-    // Pelicula
+    static String[] reservasGym = new String[6];
     static String pelicula;
-    
-    // Cine
     static String[][] asientosCine;
-    
-    // Clases
     static int cupoBaile = 0;
     static int cupoYoga = 0;
     static String[][] reservasClases;
     static int totalReservasClases = 0;
-
-    
-    // Barista
     static String[][] pedidosBarista;
     static int totalPedidos;
-    
-    
-    /**
-     * @param args the command line arguments
-     */
+
+    // ===== MAIN =====
     public static void main(String[] args) {
-
-        /* Este sería el código para realizar el proyecto de
-           Introducción a la Programación
-           Valor: 40%
-        
-           Integrantes:
-            - Julián Francisco Quesada Víquez
-            - Valeria Yhakina Alfaro Ramírez
-            - Justin Roberto Cordero Miranda
-         */
-        
-        // Pre-cargar datos
         cargarDatos();
+        SwingUtilities.invokeLater(() -> new VentanaPrincipal());
+    }
 
-        // Menú principal que se mantendrá hasta que el usuario presione en "Salir"
-        
-        boolean bandera = true;
-        
-        while (bandera) {
-            String inputPrincipal = JOptionPane.showInputDialog("¡Bienvenid@ a la interfaz de usuario de la empresa!" + "\n\n"
-                    + "Seleccione una opción del 1 al 5:" + "\n\n"
-                    + "1 - Cine" + "\n"
-                    + "2 - Gimnasio️" + "\n"
-                    + "3 - Clase de Baile o Yoga" + "\n"
-                    + "4 - Barista" + "\n"
-                    + "5 - Salir" + "\n\n"
-                    + "Ingrese una de las opciones para continuar.");
+    // ===== COMPONENTE PERSONALIZADO: Botón moderno =====
+    static class ModernButton extends JButton {
+        private Color baseColor = new Color(70, 130, 180);
+        private Color hoverColor = new Color(100, 149, 237);
+        private Color clickColor = new Color(60, 110, 160);
+        private boolean hover = false;
+        private boolean click = false;
 
-            // Validación para ver si el valor ingresado por el usuario es null o en blanco
-            if (inputPrincipal == null || inputPrincipal.trim().isEmpty()) {
-                mostrarError("No se ingresó ninguna opción. El programa se cerrará.");
-            }
+        public ModernButton(String text) {
+            super(text);
+            setForeground(Color.WHITE);
+            setBackground(baseColor);
+            setFont(new Font("Segoe UI", Font.BOLD, 15));
+            setFocusPainted(false);
+            setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+            setOpaque(false);
 
-            try {
-                int opcion = Integer.parseInt(inputPrincipal.trim());
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) { hover = true; repaint(); }
+                @Override
+                public void mouseExited(MouseEvent e) { hover = false; repaint(); }
+                @Override
+                public void mousePressed(MouseEvent e) { click = true; repaint(); }
+                @Override
+                public void mouseReleased(MouseEvent e) { click = false; repaint(); }
+            });
+        }
 
-                // Switch para manejar las diferentes opciones que pueda querer realizar el usuario
-                switch (opcion) {
-                    case 1:
-                        manejarCine();
-                        break;
-                    case 2:
-                        manejarGimnasio();
-                        break;
-                    case 3:
-                        manejarClases();
-                        break;
-                    case 4:
-                        manejarBarista();
-                        break;
-                    case 5:
-                        salir();
-                        break;
-                    default:
-                        mostrarError("La opción ingresada debe estar en el rango de 1-4.");
-                }
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            Color color = baseColor;
+            if (click) color = clickColor;
+            else if (hover) color = hoverColor;
 
-            } catch (NumberFormatException e) {
-                mostrarError("No ingresaste ninguna opción. El programa se cerrará.");
-            }
+            g2.setColor(color);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+            super.paintComponent(g);
+            g2.dispose();
+            super.paintComponent(g);
         }
     }
-        
+
+    // ===== PANEL DE FONDO CON DEGRADADO =====
+    static class GradientPanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            GradientPaint gp = new GradientPaint(0, 0, new Color(30, 50, 80),
+                                                 0, getHeight(), new Color(10, 20, 40));
+            g2.setPaint(gp);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        }
+    }
+
+    // ===== Ventana Principal =====
+    static class VentanaPrincipal extends JFrame {
+        public VentanaPrincipal() {
+            setTitle("Sistema de Gestión - Proyecto Final");
+            setSize(550, 450);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setLocationRelativeTo(null);
+            setResizable(false);
+
+            GradientPanel fondo = new GradientPanel();
+            fondo.setLayout(new BorderLayout());
+
+            JLabel lblTitulo = new JLabel("Menú Principal", SwingConstants.CENTER);
+            lblTitulo.setFont(new Font("Segoe UI Semibold", Font.BOLD, 28));
+            lblTitulo.setForeground(Color.WHITE);
+            lblTitulo.setBorder(BorderFactory.createEmptyBorder(30, 0, 20, 0));
+
+            JPanel panelBotones = new JPanel(new GridLayout(5, 1, 15, 15));
+            panelBotones.setOpaque(false);
+            panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 100, 60, 100));
+
+            ModernButton btnCine = new ModernButton("🎬 Cine");
+            ModernButton btnGimnasio = new ModernButton("🏋 Gimnasio");
+            ModernButton btnClases = new ModernButton("💃 Clases de Baile o Yoga");
+            ModernButton btnBarista = new ModernButton("☕ Barista");
+            ModernButton btnSalir = new ModernButton("❌ Salir");
+
+            btnCine.addActionListener(e -> manejarCine());
+            btnGimnasio.addActionListener(e -> manejarGimnasio());
+            btnClases.addActionListener(e -> new VentanaClases());
+            btnBarista.addActionListener(e -> new VentanaBarista());
+            btnSalir.addActionListener(e -> salir());
+
+            panelBotones.add(btnCine);
+            panelBotones.add(btnGimnasio);
+            panelBotones.add(btnClases);
+            panelBotones.add(btnBarista);
+            panelBotones.add(btnSalir);
+
+            fondo.add(lblTitulo, BorderLayout.NORTH);
+            fondo.add(panelBotones, BorderLayout.CENTER);
+            add(fondo);
+            setVisible(true);
+        }
+    }
+
+    // ===== Ventana Clases =====
+    static class VentanaClases extends JFrame {
+        public VentanaClases() {
+            setTitle("Módulo de Clases 💃");
+            setSize(450, 400);
+            setLocationRelativeTo(null);
+            setResizable(false);
+
+            GradientPanel fondo = new GradientPanel();
+            fondo.setLayout(new BorderLayout());
+
+            JLabel lblTitulo = new JLabel("Gestión de Clases", SwingConstants.CENTER);
+            lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 24));
+            lblTitulo.setForeground(Color.WHITE);
+            lblTitulo.setBorder(BorderFactory.createEmptyBorder(25, 0, 15, 0));
+
+            JPanel panel = new JPanel(new GridLayout(5, 1, 15, 15));
+            panel.setOpaque(false);
+            panel.setBorder(BorderFactory.createEmptyBorder(10, 80, 40, 80));
+
+            ModernButton btnReservar = new ModernButton("📝 Reservar Clase");
+            ModernButton btnHorarios = new ModernButton("🕒 Consultar Horarios");
+            ModernButton btnModificar = new ModernButton("✏️ Modificar Reservaciones");
+            ModernButton btnConsultar = new ModernButton("📋 Consultar Reservaciones");
+            ModernButton btnEliminar = new ModernButton("❌ Eliminar Reservaciones");
+
+            btnReservar.addActionListener(e -> escogerClase());
+            btnHorarios.addActionListener(e -> consultarHorarios("Clases"));
+            btnModificar.addActionListener(e -> modificarReservaciones("Clases"));
+            btnConsultar.addActionListener(e -> consultarReservaciones("Clases"));
+            btnEliminar.addActionListener(e -> eliminarReservaciones("Clases"));
+
+            panel.add(btnReservar);
+            panel.add(btnHorarios);
+            panel.add(btnModificar);
+            panel.add(btnConsultar);
+            panel.add(btnEliminar);
+
+            fondo.add(lblTitulo, BorderLayout.NORTH);
+            fondo.add(panel, BorderLayout.CENTER);
+            add(fondo);
+            setVisible(true);
+        }
+    }
+
+    // ===== Ventana Barista =====
+    static class VentanaBarista extends JFrame {
+        public VentanaBarista() {
+            setTitle("Módulo Barista ☕");
+            setSize(420, 360);
+            setLocationRelativeTo(null);
+            setResizable(false);
+
+            GradientPanel fondo = new GradientPanel();
+            fondo.setLayout(new BorderLayout());
+
+            JLabel lblTitulo = new JLabel("Gestión del Barista", SwingConstants.CENTER);
+            lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 24));
+            lblTitulo.setForeground(Color.WHITE);
+            lblTitulo.setBorder(BorderFactory.createEmptyBorder(25, 0, 15, 0));
+
+            JPanel panel = new JPanel(new GridLayout(4, 1, 15, 15));
+            panel.setOpaque(false);
+            panel.setBorder(BorderFactory.createEmptyBorder(10, 80, 40, 80));
+
+            ModernButton btnSolicitar = new ModernButton("📝 Solicitar Bebida");
+            ModernButton btnModificar = new ModernButton("✏️ Modificar Pedido");
+            ModernButton btnConsultar = new ModernButton("📋 Consultar Pedidos");
+            ModernButton btnEliminar = new ModernButton("❌ Eliminar Pedido");
+
+            btnSolicitar.addActionListener(e -> reservar("Barista"));
+            btnModificar.addActionListener(e -> modificarReservaciones("Barista"));
+            btnConsultar.addActionListener(e -> consultarReservaciones("Barista"));
+            btnEliminar.addActionListener(e -> eliminarReservaciones("Barista"));
+
+            panel.add(btnSolicitar);
+            panel.add(btnModificar);
+            panel.add(btnConsultar);
+            panel.add(btnEliminar);
+
+            fondo.add(lblTitulo, BorderLayout.NORTH);
+            fondo.add(panel, BorderLayout.CENTER);
+            add(fondo);
+            setVisible(true);
+        }
+    }
+
+    
     /**
      * Este método va a realizar toda la lógica que se necesita para poder mostrar el menu del cine y sus opciones.
      */
@@ -116,7 +235,8 @@ public class IntroducciónALaProgramaciónProyecto {
         // Código para desarrollar la lógica del cine
         // Se ponen de acuerdo quien lo hace
     }
-
+    
+    
     /**
      * Este método va a realizar toda la lógica que se necesita para poder mostrar el menu del gimnasio y sus opciones.
      */
@@ -125,142 +245,18 @@ public class IntroducciónALaProgramaciónProyecto {
         // Código para desarrollar la lógica del Gimnasio
         // Se ponen de acuerdo quien lo hace
     }
-    
-    
-    // Métodos para el funcionamiento de las Clases
-    
-    /**
-     * Este método va a realizar toda la lógica que se necesita para poder mostrar el menu de las clases y sus opciones.
-     */
-    public static void manejarClases() {
-        
-        // Que escoja una opción del menu
-        String inputClase = JOptionPane.showInputDialog("Has elegido: Clase de Baile o Yoga" + "\n\n"
-                + "Seleccione una opción:" + "\n"
-                + "1 - Reservar clase" + "\n"
-                + "2 - Consultar Horarios" + "\n"
-                + "3 - Modificar reservaciones" + "\n"
-                + "4 - Consultar reservaciones" + "\n"
-                + "5 - Eliminar Reservaciones" + "\n\n"
-                + "Ingrese una de las opciones para continuar");
-        
-        // Si no se escribe nada, mensaje de error en pantalla
-        if (inputClase == null || inputClase.trim().isEmpty()) {
-            mostrarError("No ingresaste ninguna opción. El programa se cerrará.");
-        }
-        
-        // Se utiliza el try-catch por si no funciona y hay un error se puede ver cual es
-        // Pero en este caso, ya sabemos cual es entonces podemos usar el método de error
+
+    public static void escogerClase() {
+        String input = JOptionPane.showInputDialog("Seleccione:\n1 - Baile\n2 - Yoga");
+        if (input == null || input.isEmpty()) return;
         try {
-            // Se guarda la opción escogida por el usuario y se utiliza en el switch
-            int opcionClase = Integer.parseInt(inputClase.trim());
-
-            switch (opcionClase) {
-                case 1:
-                    escogerClase();
-                    break;
-                case 2:
-                    consultarHorarios("Clases");
-                    break;
-                case 3:
-                    modificarReservaciones("Clases");
-                    break;
-                case 4:
-                    consultarReservaciones("Clases");
-                    break;
-                case 5:
-                    eliminarReservaciones("Clases");
-                    break;
-                default:
-                    mostrarError("La opción debe ser de 1-5");
-            }
-
-        } catch (NumberFormatException e) {
-            mostrarError("No ingresaste ninguna opción. El programa se cerrará.");
-        }
+            int op = Integer.parseInt(input);
+            if (op == 1) reservar("Clase de Baile");
+            else if (op == 2) reservar("Clase de Yoga");
+        } catch (NumberFormatException e) { mostrarError("Entrada inválida."); }
     }
-    
-    public static void escogerClase(){
-        
-        // Pedirle al usuario que escoja una de las opciones del menu
-        String inputCualClase = JOptionPane.showInputDialog("Has escogido: Reservar Clase" + "\n\n" +
-                                                            "Tiene 2 tipos de clases a escoger:" + "\n" +
-                                                            "1 - Clase de Baile" + "\n" +
-                                                            "2 - Clase de Yoga" + "\n\n" +
-                                                            "Ingrese una de las opciones para continuar");
-        
-        // Si no se escribe nada, muestra un mensaje de error
-        if (inputCualClase == null || inputCualClase.trim().isEmpty()) {
-            mostrarError("No ingresaste ninguna opción. El programa se cerrará.");
-        }
-        
-        // Se utiliza el try-catch por si no funciona y hay un error se puede ver cual es
-        // Pero en este caso, ya sabemos cual es entonces podemos usar el método de error
-        try {
-            // Se guarda la opción escogida por el usuario y se utiliza en el switch
-            int opcionTipoClase = Integer.parseInt(inputCualClase.trim());
 
-            switch (opcionTipoClase) {
-                case 1:
-                    reservar("Clase de Baile");
-                    break;
-                case 2:
-                    reservar("Clase de Yoga");
-                    break;
-                default:
-                    mostrarError("La opción debe ser 1 o 2");
-            }
-
-        } catch (NumberFormatException e) {
-            mostrarError("No ingresaste ninguna opción. El programa se cerrará.");
-        }
-    }
-    
-    //  Métodos para el funcionamiento del Barista
-    
-    /**
-     *  Este método va a realizar toda la lógica que se necesita para poder mostrar el menu del barista y sus opciones.
-     */
-    public static void manejarBarista() {
-        String inputBarista = JOptionPane.showInputDialog("Has elegido: Solicitar bebida al Barista" + "\n\n" +
-                                            "Selecione una opción:" + "\n" +
-                                            "1 - Solicitar bebida" +  "\n" +
-                                            "2 - Modificar pedido" + "\n" +
-                                            "3 - Consultar pedidos" + "\n" +
-                                            "4 - Eliminar pedido" + "\n\n" +
-                                            "Ingrese una de las opciones para continuar");
-        
-        if (inputBarista == null || inputBarista.trim().isEmpty()) {
-            mostrarError("No ingresaste ninguna opción. El programa se cerrará.");
-        }
-        
-        try{
-            int opcionBarista = Integer.parseInt(inputBarista);
-            
-            switch(opcionBarista){
-                case 1:
-                    reservar("Barista");
-                    break;
-                case 2:
-                    modificarReservaciones("Barista");
-                    break;
-                case 3:
-                    consultarReservaciones("Barista");
-                    break;
-                case 4:
-                    eliminarReservaciones("Barista");
-                    break;
-                default:
-                    mostrarError("La opción ingresada debe ser 1-4.");
-            }
-        }catch(NumberFormatException e){
-            mostrarError("No ingresaste ninguna opción. El programa se cerrará.");
-        }
-        
-    }
-    
-    // Métodos para el funcionamiento CRUD (Crear, Leer o Consultar, Editar, Eliminar)
-    
+    // === CRUD ===
     /**
      * Este método va a poder realizar la reservación ya sea del cine, gimnasio, clases entre otros...
      * @param actividad 
@@ -382,7 +378,7 @@ public class IntroducciónALaProgramaciónProyecto {
             JOptionPane.showMessageDialog(null, "Pedido registrado exitosamente.");
         }
     }
-    
+
     /**
      * Este método va a poder consultar los horarios ya sea del cine, gimnasio, clases entre otros...
      * @param actividad
@@ -402,7 +398,7 @@ public class IntroducciónALaProgramaciónProyecto {
             // Se ponen de acuerdo quien lo hace
         }
     }
-    
+
     /**
      * Este método va a poder hacer que se muestren todas las reservaciones que
      * haga el usuario solo indicando de cual actividad
@@ -478,7 +474,7 @@ public class IntroducciónALaProgramaciónProyecto {
             JOptionPane.showMessageDialog(null, mensaje);
         }
     }
-    
+
     /**
      * Este método es para poder modificar la información de las reservaciones
      * segun el tipo de actividad que sea
@@ -616,7 +612,7 @@ public class IntroducciónALaProgramaciónProyecto {
             mostrarError("No se encontró un pedido con ese ID.");
         }
     }
-    
+
     /**
      * Este método lo que hace es que elimina alguna reservación que se haya
      * hecho en alguna de las actividades
@@ -733,67 +729,39 @@ public class IntroducciónALaProgramaciónProyecto {
             }
         }
     }
-    
-    
-    // Utilidades
+
+    // ===== Utilidades =====
     
     /**
      * Este métodos va a cargar los datos necesarios que necesita el sistema
      * Con el fin de que el mismo pueda reservar, consultar información, trabajar
      * con esa información entre otros...
      */
-    public static void cargarDatos(){
-        
-        // Empleados
-        
-        empleados[0] = "E001";
-        empleados[1] = "E002";
-        empleados[2] = "E003";
-        
-        nombres[0] = "Julián Quesada";
-        nombres[1] = "Valeria Alfaro";
-        nombres[2] = "Justin Cordero";
-        
-        // Gimnasio
-        
-        horariosGym[0] = "2pm";
-        horariosGym[1] = "3pm";
-        horariosGym[2] = "4pm";
-        horariosGym[3] = "5pm";
-        horariosGym[4] = "6pm";
-        horariosGym[5] = "7pm";
-        
-        // Pelicula Inicial
+    public static void cargarDatos() {
+        empleados = new String[]{"E001", "E002", "E003"};
+        nombres = new String[]{"Julián Quesada", "Valeria Alfaro", "Justin Cordero"};
+        horariosGym = new String[]{"2pm", "3pm", "4pm", "5pm", "6pm", "7pm"};
         pelicula = "Matrix Reloaded";
-        
-        // Inicializar asinetos del cine
-        asientosCine = new String[5][6]; // 5 filas (A-E), 6 columnas (1-6)
-        
-        // Inicializar cupos de clases
-        cupoBaile = 0;
-        cupoYoga = 0;
-        reservasClases = new String[60][3]; // [ID, tipoClase, hora]
-        
-        // Inicializar pedidos del barista
-        pedidosBarista = new String[100][3]; // [ID, Bebida, Hora de Entrega]
-        totalPedidos = 0;
+        asientosCine = new String[5][6];
+        reservasClases = new String[60][3];
+        pedidosBarista = new String[100][3];
     }
+
     
     /**
      * Este método permitirá que el usuario pueda salirse de la aplicación
      */
-    public static void salir(){
-        JOptionPane.showMessageDialog(null, "¡Muchas gracias por usar el sistema, hasta luego!");
+    public static void salir() {
+        JOptionPane.showMessageDialog(null, "¡Gracias por usar el sistema!");
         System.exit(0);
     }
-        
+
     /**
      * Permitirá mostrar un mensaje de error en caso de que haya uno y así hacerle saber al usuario
      * el porque el sistema se apagó
      * @param mensaje 
      */
     public static void mostrarError(String mensaje) {
-        JOptionPane.showMessageDialog(null, mensaje);
-        System.exit(0);
+        JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
