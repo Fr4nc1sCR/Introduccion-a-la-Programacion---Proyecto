@@ -908,7 +908,7 @@ public class IntroducciónALaProgramaciónProyecto {
             setContentPane(fondo);
 
             GlassCard card = new GlassCard(new BorderLayout(8, 8));
-            card.setPreferredSize(new Dimension(300, 170));
+            card.setPreferredSize(new Dimension(390, 280));
 
             JLabel titulo = new JLabel("Reservaciones de Clases", SwingConstants.CENTER);
             titulo.setFont(new Font("Segoe UI Semibold", Font.BOLD, 22));
@@ -1309,7 +1309,7 @@ public class IntroducciónALaProgramaciónProyecto {
             setContentPane(fondo);
 
             GlassCard card = new GlassCard(new BorderLayout());
-            card.setPreferredSize(new Dimension(580, 320));
+            card.setPreferredSize(new Dimension(440, 320));
 
             JLabel titulo = new JLabel("Pedidos Registrados", SwingConstants.CENTER);
             titulo.setFont(new Font("Segoe UI Semibold", Font.BOLD, 22));
@@ -1364,7 +1364,7 @@ public class IntroducciónALaProgramaciónProyecto {
 
         public DialogModificarPedido(Frame owner) {
             super(owner, "Modificar Pedido", true);
-            setSize(700, 420);
+            setSize(540, 400);
             setLocationRelativeTo(owner);
             setResizable(false);
 
@@ -1373,10 +1373,11 @@ public class IntroducciónALaProgramaciónProyecto {
             setContentPane(fondo);
 
             GlassCard card = new GlassCard(new GridBagLayout());
-            card.setPreferredSize(new Dimension(580, 320));
+            card.setPreferredSize(new Dimension(580, 320));   // tamaño lujoso
 
             GridBagConstraints c = new GridBagConstraints();
             c.insets = new Insets(8, 10, 8, 10);
+            c.fill = GridBagConstraints.HORIZONTAL;
 
             JLabel titulo = new JLabel("Modificar Pedido");
             titulo.setFont(new Font("Segoe UI Semibold", Font.BOLD, 22));
@@ -1475,7 +1476,7 @@ public class IntroducciónALaProgramaciónProyecto {
 
         public DialogEliminarPedido(Frame owner) {
             super(owner, "Eliminar Pedido", true);
-            setSize(640, 360);
+            setSize(540, 400);
             setLocationRelativeTo(owner);
             setResizable(false);
 
@@ -1484,10 +1485,11 @@ public class IntroducciónALaProgramaciónProyecto {
             setContentPane(fondo);
 
             GlassCard card = new GlassCard(new GridBagLayout());
-            card.setPreferredSize(new Dimension(580, 320));
+            card.setPreferredSize(new Dimension(580, 320));   // tamaño lujoso
 
             GridBagConstraints c = new GridBagConstraints();
             c.insets = new Insets(8, 10, 8, 10);
+            c.fill = GridBagConstraints.HORIZONTAL;
 
             JLabel titulo = new JLabel("Eliminar Pedido");
             titulo.setFont(new Font("Segoe UI Semibold", Font.BOLD, 22));
