@@ -1944,8 +1944,8 @@ public class IntroducciónALaProgramaciónProyecto {
     // ======================== UTILIDADES =====================
     // =========================================================
     public static void cargarDatos() {
-        empleados = new String[]{"E001", "E002", "E003"};
-        nombres = new String[]{"Julián Quesada", "Valeria Alfaro", "Justin Cordero"};
+        empleados = new String[]{"E001", "E002", "E003", "E004"};
+        nombres = new String[]{"Julián Quesada", "Valeria Alfaro", "Justin Cordero", "David"};
 
         horariosGym = new String[]{"2:00 pm", "3:00 pm", "4:00 pm", "5:00 pm", "6:00 pm", "7:00 pm"};
         reservasGym = new String[6];
