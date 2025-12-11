@@ -2,7 +2,6 @@
  * Creadores:
  *  - Julián Francisco Quesada Víquez
  *  - Valeria Yhakina Alfaro Ramírez
- *  - Justin Roberto Cordero Miranda
  * 
  * Fecha de Creación: 21/11/2025
  * 
