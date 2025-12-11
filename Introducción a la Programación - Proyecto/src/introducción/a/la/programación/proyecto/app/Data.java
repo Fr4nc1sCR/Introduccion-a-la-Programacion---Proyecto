@@ -2,7 +2,6 @@
  * Creadores:
  *  - Julián Francisco Quesada Víquez
  *  - Valeria Yhakina Alfaro Ramírez
- *  - Justin Roberto Cordero Miranda
  *
  * Fecha de Creación: 21/11/2025
  *
@@ -69,7 +68,6 @@ public class Data {
         // Empleados predeterminados
         empleados[0] = "E001";   nombres[0] = "Julián Quesada";
         empleados[1] = "E002";   nombres[1] = "Valeria Alfaro";
-        empleados[2] = "E003";   nombres[2] = "Justin Cordero";
 
 
         // ---- Gimnasio ----
