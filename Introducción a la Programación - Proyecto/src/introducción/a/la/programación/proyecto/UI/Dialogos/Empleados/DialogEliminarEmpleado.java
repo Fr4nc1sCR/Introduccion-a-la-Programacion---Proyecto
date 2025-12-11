@@ -1,7 +1,14 @@
 /**
- * Dialogo para eliminar un empleado del sistema.
+ * Creadores:
+ *  - Julián Francisco Quesada Víquez
+ *  - Valeria Yhakina Alfaro Ramírez
+ *
+ * Fecha de Creación: 21/11/2025
+ *
+ * Descripción:
+ * Permite eliminar la información del empleado que se encuentre seleccionado en
+ * ese momento
  */
-
 package introducción.a.la.programación.proyecto.UI.Dialogos.Empleados;
 
 import javax.swing.*;
